@@ -55,7 +55,7 @@ This repository contains a Symfony-based implementation of an event consuming sy
 
 ### 1. Clone the repository 
 ```bash
-git clone https://github.com/miqo-srapionyan/event-consumer.git
+git clone git@github.com:miqo-srapionyan/event-cosumer.git
 ```
 ```bash
 cd event-consumer
