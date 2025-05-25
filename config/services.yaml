@@ -4,21 +4,55 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    # Redis lock TTL in seconds
+    redis_lock_ttl: 30
+    # Minimum request interval in milliseconds
+    min_request_interval_ms: 200
+    # Event sources configuration
+    app.event_sources:
+        - { name: 'source1', url: 'http://event-source-1:3001/events' }
+        - { name: 'source2', url: 'http://event-source-2:3002/events' }
+        - { name: 'source3', url: 'http://event-source-3:3003/events' }
 
 services:
-    # default configuration for services in *this* file
+    # Default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        bind:
+            $minRequestIntervalMs: '%min_request_interval_ms%'
+            $redisLockTtl: '%redis_lock_ttl%'
 
-    # makes classes in src/ available to be used as services
-    # this creates a service per class whose id is the fully-qualified class name
+    # Makes classes in src/ available to be used as services
+    # This creates a service per class whose id is the fully-qualified class name
     App\:
         resource: '../src/'
         exclude:
-            - '../src/DependencyInjection/'
-            - '../src/Entity/'
             - '../src/Kernel.php'
 
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
+    App\EventConsumer\Factory\EventSourceFactory:
+        arguments:
+            $httpClient: '@http_client'
+            $sourceConfig: '%app.event_sources%'
+    # Event Consumer System
+    App\EventConsumer\EventConsumer:
+        arguments:
+            $storage: '@App\EventConsumer\Storage\DoctrineEventStorage'
+            $lockManager: '@App\EventConsumer\Infrastructure\RedisLockManager'
+            $logger: '@logger'
+            $minRequestIntervalMs: '%min_request_interval_ms%'
+
+    App\EventConsumer\Infrastructure\RedisLockManager:
+        arguments:
+            $redis: '@Redis'
+            $ttlSeconds: '%redis_lock_ttl%'
+
+    App\EventConsumer\Infrastructure\RedisRequestTimeStore:
+        arguments:
+            $redis: '@Redis'
+
+    # Configure Redis client
+    Redis:
+        class: Redis
+        calls:
+            - [connect, ['%env(REDIS_HOST)%', '%env(int:REDIS_PORT)%']]
