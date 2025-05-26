@@ -45,7 +45,7 @@ This repository contains a Symfony-based implementation of an event consuming sy
 
 ## Requirements
 
-- Docker & Docker Compose **(required)**
+- [Docker](https://docs.docker.com/engine/install/) & [Docker Compose](https://docs.docker.com/compose/install/) **(required)** 
 - PHP 8.1 or higher (via Docker)
 - Symfony 6.0 or higher (via Docker)
 - Redis server (via Docker)
