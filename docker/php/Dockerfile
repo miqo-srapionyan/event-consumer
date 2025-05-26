@@ -16,14 +16,14 @@ WORKDIR /var/www/event-consumer
 
 COPY --link composer.* symfony.* ./
 RUN set -eux; \
-	composer install --no-cache --prefer-dist --no-dev --no-autoloader --no-scripts --no-progress
+	composer install --no-scripts
 
 # copy sources
 COPY --link . ./
 
 RUN set -eux; \
 	mkdir -p var/cache var/log; \
-	composer dump-autoload --classmap-authoritative --no-dev; \
+	composer dump-autoload --classmap-authoritative; \
 	composer dump-env prod; \
-	composer run-script --no-dev post-install-cmd; \
+	composer run-script post-install-cmd; \
 	chmod +x bin/console; sync;
