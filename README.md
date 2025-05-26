@@ -112,7 +112,7 @@ The system is built around the following key interfaces:
 Run the tests with PHPUnit inside container:
 
 ```bash
-docker exec -it event-consumer-php-1 bash
+docker exec -it event-consumer-consumer-1 bash
 ```
 ```bash
 php bin/phpunit
