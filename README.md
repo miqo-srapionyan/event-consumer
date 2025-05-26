@@ -64,7 +64,7 @@ cd event-consumer
 Make sure Docker is running, then start Redis, Node.js, and the PHP app container:
 
 ```bash
-docker-compose up -d --build
+docker compose up -d --build
 ```
 This will:
 
@@ -80,7 +80,7 @@ docker logs -f event-consumer-consumer-1
 
 ### Stop containers
 ```bash
-docker-compose down
+docker compose down
 ```
 
 ## Adding Event Sources
