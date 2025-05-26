@@ -6,8 +6,6 @@ services:
             context: .
             dockerfile: docker/php/Dockerfile
         command: php bin/console app:consume-events -vvv
-        volumes:
-            - ./:/var/www/event-consumer
         depends_on:
             - redis
         environment:

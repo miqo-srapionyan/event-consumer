@@ -73,12 +73,14 @@ This will:
 - Start the mock events servers (Node.js)
 - Start event consumer servers (replica: 3)
 
-## Usage
-
-### Running the Event Loader
-
+To check logs of consumer you can run:
 ```bash
-php bin/console app:event-loader:run # will be run automatically in container
+docker logs -f event-consumer-consumer-1
+```
+
+### Stop containers
+```bash
+docker-compose down
 ```
 
 ## Adding Event Sources
