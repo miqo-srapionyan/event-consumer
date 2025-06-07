@@ -62,9 +62,9 @@ class EventConsumerTest extends TestCase
     {
         $this->eventConsumer->addEventSource($this->sourceAMock);
 
-        // We can't directly test the private array, but we can test the behavior
-        // by mocking a single cycle run
-        $this->assertInstanceOf(EventConsumer::class, $this->eventConsumer);
+        $sources = $this->eventConsumer->getEventSources();
+        $this->assertCount(1, $sources);
+        $this->assertSame($this->sourceAMock, $sources[0]);
     }
 
     public function testRespectMinRequestInterval(): void

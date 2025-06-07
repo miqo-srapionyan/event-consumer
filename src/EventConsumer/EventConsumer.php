@@ -39,6 +39,11 @@ class EventConsumer implements EventConsumerInterface
         $this->eventSources[] = $eventSource;
     }
 
+    public function getEventSources(): array
+    {
+        return $this->eventSources;
+    }
+
     public function run(): void
     {
         if (empty($this->eventSources)) {
