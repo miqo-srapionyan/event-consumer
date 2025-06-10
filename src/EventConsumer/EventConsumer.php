@@ -103,6 +103,8 @@ class EventConsumer implements EventConsumerInterface
                 } finally {
                     $this->lockManager->releaseLock($lockKey);
                 }
+
+                usleep(500000); // 50ms sleep
             }
 
             // Small sleep to prevent CPU overload in the infinite loop
